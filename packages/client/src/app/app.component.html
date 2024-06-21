@@ -1,0 +1,249 @@
+<header>
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Advanced_Info_Service_logo.svg/1280px-Advanced_Info_Service_logo.svg.png"
+    alt="AIS LOGO"
+  />
+  <h4>Insert, Update and Delete</h4>
+</header>
+
+<!-- {{users[0].displayName}} -->
+
+<!-- <div #userContainer></div>
+
+<div>
+<ng-template #userTemplate let-user let-index="index">
+  <span>
+    {{ users[index].displayName }}
+  </span>
+</ng-template>
+</div> -->
+
+<!-- <div #userContainer class="grid grid-cols-3 gap-4">
+  <ng-container *ngFor="let user of users; let i = index">
+    <ng-container *ngTemplateOutlet="userTemplate; context: { $implicit: user, index: i }"></ng-container>
+  </ng-container>
+</div>
+
+
+<ng-template #userTemplate let-user let-index="index">
+  <div class="p-4 border border-gray-300 rounded-lg shadow-md">
+    <span class="text-lg font-semibold text-gray-800">{{ user.displayName }}</span>
+  </div>
+</ng-template> -->
+
+<h1 class="text-3xl font-bold text-center text-gray-800 mt-4 mb-4">
+  List and details of users in the database
+</h1>
+
+<div id="userContainer" class="grid grid-cols-3 gap-4 text-center">
+  <ng-container *ngFor="let user of users; let i = index">
+    <ng-container
+      *ngTemplateOutlet="userTemplate; context: { $implicit: user, index: i }"
+    ></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #userTemplate let-user let-index="index">
+  <div
+    class="group p-5 border border-gray-300 rounded-lg shadow-md hover:bg-gray-100 transition duration-300 ease-in-out"
+  >
+    <img
+      src="https://cdn-icons-png.freepik.com/512/3177/3177440.png"
+      alt="profile-Icon"
+      class="w-12 h-12 mx-auto"
+    />
+    <p class="text-xl font-semibold text-gray-800">
+      <span class="text-gray-800"
+        >{{ user.displayName }} ({{ user.username }})</span
+      >
+    </p>
+    <p class="text-sm font-semibold text-gray-800">
+      ID: <span class="text-gray-800">{{ user._id }}</span>
+    </p>
+  </div>
+</ng-template>
+
+<main
+  class="main p-8 bg-gray-100 min-h-screen flex items-center justify-center"
+>
+  <div class="content w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+    <div class="text-center">
+      <!-- Button to toggle form visibility -->
+      <button
+        (click)="toggleFormVisibility()"
+        class="bg-blue-500 text-white py-2 px-4 rounded mb-4 hover:bg-blue-600"
+      >
+        {{ formVisible ? "Hide" : "Show" }} Registration Form
+      </button>
+
+      <!-- Display the username and password in real-time -->
+      <div *ngIf="formVisible" class="mb-4">
+        <h3 class="text-lg font-bold">Real-time Display</h3>
+        <p><strong>Email:</strong> {{ form.email }}</p>
+        <p><strong>Fullname:</strong> {{ form.fullname }}</p>
+        <p><strong>Username:</strong> {{ form.username }}</p>
+        <p><strong>Password:</strong> {{ form.password }}</p>
+      </div>
+
+      <!-- Registration form, initially hidden -->
+      <div *ngIf="formVisible" class="register-form">
+        <form
+          name="form"
+          #f="ngForm"
+          (ngSubmit)="f.form.valid && onSubmit()"
+          novalidate
+        >
+          <div class="form-group mb-4">
+            <label class="block text-gray-700">Email</label>
+            <input
+              type="email"
+              class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+              name="email"
+              [(ngModel)]="form.email"
+              required
+              #email="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && email.errors }"
+            />
+            <div
+              *ngIf="f.submitted && email.errors"
+              class="text-red-500 text-sm mt-1"
+            >
+              <div *ngIf="email.errors['required']">Email is required</div>
+              <div *ngIf="email.errors['email']">Email is invalid</div>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="block text-gray-700">Full Name</label>
+            <input
+              type="text"
+              class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+              name="fullname"
+              [(ngModel)]="form.fullname"
+              required
+              #fullname="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && fullname.errors }"
+            />
+            <div
+              *ngIf="f.submitted && fullname.errors"
+              class="text-red-500 text-sm mt-1"
+            >
+              <div *ngIf="fullname.errors['required']">
+                Full name is required
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="block text-gray-700">Username</label>
+            <input
+              type="text"
+              class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+              name="username"
+              [(ngModel)]="form.username"
+              required
+              minlength="6"
+              maxlength="20"
+              #username="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
+            />
+            <div
+              *ngIf="f.submitted && username.errors"
+              class="text-red-500 text-sm mt-1"
+            >
+              <div *ngIf="username.errors['required']">
+                Username is required
+              </div>
+              <div *ngIf="username.errors['minlength']">
+                Username must be at least 6 characters
+              </div>
+              <div *ngIf="username.errors['maxlength']">
+                Username must be at most 20 characters
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="block text-gray-700">Password</label>
+            <input
+              type="password"
+              class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+              name="password"
+              [(ngModel)]="form.password"
+              required
+              minlength="6"
+              maxlength="40"
+              #password="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
+            />
+            <div
+              *ngIf="f.submitted && password.errors"
+              class="text-red-500 text-sm mt-1"
+            >
+              <div *ngIf="password.errors['required']">
+                Password is required
+              </div>
+              <div *ngIf="password.errors['minlength']">
+                Password must be at least 6 characters
+              </div>
+              <div *ngIf="password.errors['maxlength']">
+                Password must not exceed 40 characters
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group form-check mb-4">
+            <input
+              type="checkbox"
+              class="form-check-input mt-1 block"
+              name="acceptTerms"
+              [(ngModel)]="form.acceptTerms"
+              required
+              #acceptTerms="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && acceptTerms.errors }"
+            />
+            <label for="acceptTerms" class="ml-2 text-gray-700"
+              >I have read and agree to the Terms</label
+            >
+            <div
+              *ngIf="f.submitted && acceptTerms.errors"
+              class="text-red-500 text-sm mt-1"
+            >
+              Accept Terms is required
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <div class="form-group">
+            <button
+              type="submit"
+              class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            >
+              Register
+            </button>
+            <button
+              type="button"
+              (click)="onReset(f)"
+              class="bg-yellow-500 text-white py-2 px-4 rounded ml-4 hover:bg-yellow-600"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="text-white">Angular 17 + NestJS + MongoDB Demo</div>
+
+  <div class="flex space-x-4">
+    <!-- <a href="#" class="text-white hover:underline">Insert</a>           
+    <a href="#" class="text-white hover:underline">Update</a>   
+    <a href="#" class="text-white hover:underline">Delete</a> -->
+  </div>
+</footer>
+
+<router-outlet />

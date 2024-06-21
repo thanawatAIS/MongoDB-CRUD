@@ -1,0 +1,30 @@
+header {
+    background-color: rgb(40,92,76);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer {
+    background-color: rgb(40, 92, 76);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    font-size: large;
+    font-weight: bold;
+    color: white;
+}
+
+  header img {
+    height: 50px;
+  }
+  
+  header h4 {
+    margin: 0;
+    font-size: large;
+    font-weight: bold;
+    color: white;
+  }
